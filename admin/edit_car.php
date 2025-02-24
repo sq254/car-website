@@ -6,7 +6,27 @@ if (!isset($_SESSION['admin'])) {
 }
 include "../config/database.php";
 
-// Check if a specific car is selected for editing
+// If a delete request is made:
+if (isset($_GET['delete_id'])) {
+    $car_id = intval($_GET['delete_id']);
+    
+    // Delete associated images from the file system
+    $sqlImages = "SELECT image_path FROM car_images WHERE car_id = $car_id";
+    $resultImages = $conn->query($sqlImages);
+    while ($row = $resultImages->fetch_assoc()) {
+        $imagePath = $row['image_path'];
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
+    }
+    
+    // Delete image records and then the car record
+    $conn->query("DELETE FROM car_images WHERE car_id = $car_id");
+    $conn->query("DELETE FROM cars WHERE id = $car_id");
+    $success = "Car deleted successfully!";
+}
+
+// If a specific car is selected for editing:
 if (isset($_GET['id'])) {
     $car_id = intval($_GET['id']);
     $sql = "SELECT * FROM cars WHERE id = $car_id";
@@ -79,6 +99,9 @@ if (isset($_GET['id'])) {
               <button type="submit">Update Car</button>
            </form>
            <br>
+           <!-- Delete Car button -->
+           <a href="edit_car.php?delete_id=<?php echo $car['id']; ?>" onclick="return confirm('Are you sure you want to delete this car?');" class="btn">Delete Car</a>
+           <br><br>
            <a href="edit_car.php">Back to Car List</a>
        </div>
        <?php include("../footer.php"); ?>
@@ -87,7 +110,7 @@ if (isset($_GET['id'])) {
     <?php
     exit();
 } else {
-    // No specific car selected – list all cars with edit options
+    // No specific car selected – list all cars with both Edit and Delete options
     $sql = "SELECT * FROM cars ORDER BY created_at DESC";
     $result = $conn->query($sql);
     ?>
@@ -95,13 +118,14 @@ if (isset($_GET['id'])) {
     <html>
     <head>
        <meta charset="UTF-8">
-       <title>Edit Car</title>
+       <title>Edit/Delete Car</title>
        <link rel="stylesheet" href="../css/style.css">
     </head>
     <body>
        <?php include("../header.php"); ?>
        <div class="container">
-          <h2>Select a Car to Edit</h2>
+          <h2>Select a Car to Edit/Delete</h2>
+          <?php if(isset($success)) echo "<p class='success'>$success</p>"; ?>
           <table border="1" cellpadding="5" cellspacing="0">
              <tr>
                 <th>ID</th>
@@ -115,7 +139,8 @@ if (isset($_GET['id'])) {
                    <td><?php echo htmlspecialchars($row['name']); ?></td>
                    <td><?php echo htmlspecialchars($row['category']); ?></td>
                    <td>
-                      <a href="edit_car.php?id=<?php echo $row['id']; ?>">Edit</a>
+                      <a href="edit_car.php?id=<?php echo $row['id']; ?>">Edit</a> | 
+                      <a href="edit_car.php?delete_id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this car?');">Delete</a>
                    </td>
                 </tr>
              <?php } ?>

@@ -48,31 +48,7 @@ $images_query = $conn->query("SELECT image_path FROM car_images WHERE car_id = $
   <meta charset="UTF-8">
   <title><?php echo htmlspecialchars($car['name']); ?> - Details</title>
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    /* Gallery styling for all car images */
-    .car-images {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: center;
-        margin-bottom: 20px;
-    }
-    .car-images img {
-        max-width: 300px;
-        max-height: 300px;
-        object-fit: cover;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-    /* Styling for the form container */
-    .form-container {
-        margin-top: 20px;
-        padding: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        background-color: #f9f9f9;
-    }
-  </style>
+
 </head>
 <body>
   <?php include "header.php"; ?>

@@ -19,7 +19,6 @@ if (!isset($_SESSION['admin'])) {
     <nav>
       <a href="add_car.php" class="btn">Add Car</a> |
       <a href="edit_car.php" class="btn">Edit Car</a> |
-      <a href="delete_car.php" class="btn">Delete Car</a> |
       <a href="view_requests.php" class="btn">View Requests</a> |
       <a href="logout.php" class="btn">Logout</a>
     </nav>

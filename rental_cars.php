@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['rent_car_id'])) {
               <input type="text" name="location" required><br>
               <label>Additional Details:</label><br>
               <textarea name="message"></textarea><br>
-              <button type="submit" class="btn" style="background-color: black; color: white;">Submit Rental Request</button>
+              <button type="submit" class="btn">Submit Rental Request</button>
             </form>
           </div>
         </div>

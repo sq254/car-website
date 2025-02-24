@@ -1,8 +1,7 @@
 <!-- header.php -->
 <header>
   <div class="header-container">
-    <!-- The absolute link here always points to the home page -->
-    <h1><a href="/carrental/index.php">Car Rental & Hire Hub</a></h1>
+  <h1 style="color: white;"><a href="/carrental/index.php" style="color: inherit;">Car Rental & Hire Hub</a></h1>
     <nav>
       <ul>
         <li><a href="/carrental/index.php">Home</a></li>
