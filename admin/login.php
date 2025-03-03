@@ -34,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+<?php include("../header.php"); ?>
     <div class="login-container">
         <h2>Admin Login</h2>
         <?php if(isset($error)) { echo "<p class='error'>$error</p>"; } ?>

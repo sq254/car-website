@@ -13,8 +13,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user_location = $conn->real_escape_string($_POST['location']);
         $user_message = $conn->real_escape_string($_POST['message']);
         $request_type = 'rental';
-        $sql = "INSERT INTO requests (car_id, request_type, name, email, contact, location, message) 
-                VALUES ('$car_id', '$request_type', '$user_name', '$user_email', '$user_contact', '$user_location', '$user_message')";
+
+        // Process driving license upload
+        $licensePath = "";
+        if (isset($_FILES['driving_license']) && $_FILES['driving_license']['error'] == 0) {
+            $target_dir = "uploads/license/";
+            if (!file_exists($target_dir)) {
+                mkdir($target_dir, 0777, true);
+            }
+            $target_file = $target_dir . basename($_FILES["driving_license"]["name"]);
+            if (move_uploaded_file($_FILES["driving_license"]["tmp_name"], $target_file)) {
+                $licensePath = $target_file;
+            }
+        }
+
+        $sql = "INSERT INTO requests (car_id, request_type, name, email, contact, location, message, license_path) 
+                VALUES ('$car_id', '$request_type', '$user_name', '$user_email', '$user_contact', '$user_location', '$user_message', '$licensePath')";
         if ($conn->query($sql)) {
             $formSuccess = "Your rental request has been submitted!";
         } else {
@@ -137,23 +151,31 @@ if ($searchCategory == "rental") {
             <p><?php echo substr(htmlspecialchars($car['description']), 0, 100) . '...'; ?></p>
             <a href="car_details.php?id=<?php echo $car['id']; ?><?php echo ($defaultAction != '') ? '&action=' . $defaultAction : ''; ?>" class="btn">View Details</a>
             
-            <!-- If the search filter does not force one action, show both buttons -->
+            <!-- Rental Option  -->
             <?php if ($defaultAction == "rental" || $defaultAction == ""): ?>
-              <button onclick="toggleForm('rentForm_<?php echo $car['id']; ?>')" class="btn">Rent Now</button>
-              <div id="rentForm_<?php echo $car['id']; ?>" style="display:none; margin-top:10px; border:1px solid #ccc; padding:10px;">
-                <form method="POST" action="search.php?<?php echo http_build_query($_GET); ?>">
-                  <input type="hidden" name="rent_car_id" value="<?php echo $car['id']; ?>">
-                  <label>Your Name:</label><br><input type="text" name="name" required><br>
-                  <label>Your Email:</label><br><input type="email" name="email" required><br>
-                  <label>Contact Number:</label><br><input type="text" name="contact" required><br>
-                  <label>Location:</label><br><input type="text" name="location" required><br>
-                  <label>Additional Details:</label><br><textarea name="message"></textarea><br>
-                  <button type="submit" class="btn">Submit Rental Request</button>
-                </form>
-              </div>
+              <?php if (!isset($_SESSION['user_id'])): ?>
+                <!-- If not logged in, prompt to register/login instead of renting -->
+                <a href="/carrental/register.php" class="btn">Please register or login to rent</a>
+              <?php else: ?>
+                <button onclick="toggleForm('rentForm_<?php echo $car['id']; ?>')" class="btn">Rent</button>
+                <div id="rentForm_<?php echo $car['id']; ?>" style="display:none; margin-top:10px; border:1px solid #ccc; padding:10px;">
+                  <form method="POST" action="search.php?<?php echo http_build_query($_GET); ?>" enctype="multipart/form-data">
+                    <input type="hidden" name="rent_car_id" value="<?php echo $car['id']; ?>">
+                    <label>Your Name:</label><br><input type="text" name="name" required><br>
+                    <label>Your Email:</label><br><input type="email" name="email" required><br>
+                    <label>Contact Number:</label><br><input type="text" name="contact" required><br>
+                    <label>Location:</label><br><input type="text" name="location" required><br>
+                    <label>Additional Details:</label><br><textarea name="message"></textarea><br>
+                    <label>Upload Driving License:</label><br><input type="file" name="driving_license" accept="image/*" required><br>
+                    <button type="submit" class="btn">Submit Rental Request</button>
+                  </form>
+                </div>
+              <?php endif; ?>
             <?php endif; ?>
+            
+            <!-- Purchase Option  -->
             <?php if ($defaultAction == "purchase" || $defaultAction == ""): ?>
-              <button onclick="toggleForm('purchaseForm_<?php echo $car['id']; ?>')" class="btn">Purchase Now</button>
+              <button onclick="toggleForm('purchaseForm_<?php echo $car['id']; ?>')" class="btn">Purchase</button>
               <div id="purchaseForm_<?php echo $car['id']; ?>" style="display:none; margin-top:10px; border:1px solid #ccc; padding:10px;">
                 <form method="POST" action="search.php?<?php echo http_build_query($_GET); ?>">
                   <input type="hidden" name="purchase_car_id" value="<?php echo $car['id']; ?>">

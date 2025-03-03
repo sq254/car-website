@@ -7,12 +7,12 @@ if (!isset($_SESSION['admin'])) {
 
 include "../config/database.php";
 
-// Define allowed file extensions and maximum file size (100MB)
+//file size (100MB)
 $allowedExtensions = array("jpg", "jpeg", "png", "gif");
 $maxFileSize = 100 * 1024 * 1024; // 100 MB
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitize and retrieve form inputs
+    // retrieve form inputs
     $name        = $conn->real_escape_string($_POST['name']);
     $description = $conn->real_escape_string($_POST['description']);
     $specs       = $conn->real_escape_string($_POST['specs']);
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $fileExtension = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
                     if (in_array($fileExtension, $allowedExtensions)) {
                         if ($fileSize <= $maxFileSize) {
-                            // Since add_car.php is in "admin", use "../images/" to store files in the "images" folder
+                            //store files in the "images" folder
                             $target_dir = "../images/";
                             // Generate a unique filename to avoid collisions
                             $uniqueFileName = time() . "_" . basename($imageName);

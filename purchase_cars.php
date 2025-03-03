@@ -55,10 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['purchase_car_id'])) {
           <img src="<?php echo $imgSrc; ?>" alt="<?php echo htmlspecialchars($car['name']); ?>" style="cursor:pointer;" onclick="window.location='car_details.php?id=<?php echo $car['id']; ?>&action=purchase'">
           <h3><?php echo htmlspecialchars($car['name']); ?></h3>
           <p><?php echo substr(htmlspecialchars($car['description']), 0, 100) . '...'; ?></p>
-          <!-- View Details Link -->
-          <a href="car_details.php?id=<?php echo $car['id']; ?>&action=purchase" class="btn"style="background-color: black; color: white;">View Details</a>
+          <a href="car_details.php?id=<?php echo $car['id']; ?>&action=purchase" class="btn" >View Details</a>
           <!-- Toggle Purchase Form -->
-          <button onclick="togglePurchaseForm(<?php echo $car['id']; ?>)" class="btn"style="background-color: black; color: white;">Purchase Now</button>
+          <button onclick="togglePurchaseForm(<?php echo $car['id']; ?>)" class="btn" >Purchase</button>
           <div id="purchaseForm_<?php echo $car['id']; ?>" style="display:none; margin-top:10px; border:1px solid #ccc; padding:10px;">
             <form method="POST" action="purchase_cars.php">
               <input type="hidden" name="purchase_car_id" value="<?php echo $car['id']; ?>">

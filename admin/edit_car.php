@@ -20,7 +20,7 @@ if (isset($_GET['delete_id'])) {
         }
     }
     
-    // Delete image records and then the car record
+    // Delete image records and then update the car record
     $conn->query("DELETE FROM car_images WHERE car_id = $car_id");
     $conn->query("DELETE FROM cars WHERE id = $car_id");
     $success = "Car deleted successfully!";

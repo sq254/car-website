@@ -17,10 +17,9 @@ if (!isset($_SESSION['admin'])) {
   <div class="container">
     <h2>Welcome, <?php echo $_SESSION['admin']; ?></h2>
     <nav>
-      <a href="add_car.php" class="btn">Add Car</a> |
-      <a href="edit_car.php" class="btn">Edit Car</a> |
-      <a href="view_requests.php" class="btn">View Requests</a> |
-      <a href="logout.php" class="btn">Logout</a>
+      <a href="add_car.php" class="btn">Add Car</a> 
+      <a href="edit_car.php" class="btn">Edit Car</a> 
+      <a href="view_requests.php" class="btn">View Requests</a> 
     </nav>
   </div>
   <?php include("../footer.php"); ?>
