@@ -108,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <option value="both">Both</option>
             </select>
             
-            <label for="images">Upload Images (select multiple files):</label>
+            <label for="images">Upload Images :</label>
             <input type="file" id="images" name="images[]" multiple>
             
             <button type="submit">Add Car</button>
