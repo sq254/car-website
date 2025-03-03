@@ -44,8 +44,8 @@ body {
     background: rgba(0,0,0, 0.726);
     margin: 20px auto;
     padding: 20px;
-    max-width: 1200px;
-    border-radius: 8px;
+    max-width: 1500px;
+    border-radius: 10px;
 }
 
 /* Header styles */
